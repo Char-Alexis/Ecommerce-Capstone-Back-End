@@ -44,5 +44,9 @@ class Payment(models.Model):
     card_number = models.IntegerField()
     expiration_date = models.IntegerField()
 
+class Cart(models.Model):
+    User= models.ForeignKey(User, on_delete=CASCADE, blank= False)
+    Product= models.ForeignKey(Product, on_delete=CASCADE, blank= False)
+
 
 

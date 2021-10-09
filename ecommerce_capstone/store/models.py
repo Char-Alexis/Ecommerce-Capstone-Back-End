@@ -10,7 +10,7 @@ from django.db.models.deletion import CASCADE
 
 # Create your models here.
 class User(models.Model): 
-    user= models.ForeignKey(User, on_delete=CASCADE, blank= False)
+    user_id= models.ForeignKey(User, on_delete=CASCADE, blank= False)
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
     username = models.CharField(max_length=50, blank=False)
@@ -20,33 +20,39 @@ class User(models.Model):
     zip_code= models.IntegerField()
     state = models.CharField(max_length=20, blank = True)
     country = models.CharField(max_length=20, blank = True)
-    
+
 class Product(models.Model):
     product_name = models.CharField(max_length=50)
-    price = models.IntegerField()
+    price = models.FloatField()
     description= models.CharField(max_length=200)
     category= models.CharField(max_length=20)
+    image = models.ImageField(upload_to='upload/', blank= True, null= True)
+    
+    def get_image(self):
+        if self.image:
+            return 'http://127/0/01:8000' + self.image.url
+        return ''
 
 class Review(models.Model):
-    User= models.ForeignKey(User, on_delete=CASCADE, blank= False)
-    Product= models.ForeignKey(Product, on_delete=CASCADE, blank= False)
+    user_id= models.ForeignKey(User, on_delete=CASCADE, blank= False)
+    product_id= models.ForeignKey(Product, on_delete=CASCADE, blank= False)
     comment= models.CharField(max_length=200)
 
-class Order(models.Model):
-    User= models.ForeignKey(User, on_delete=CASCADE, blank= False)
-    Product= models.ForeignKey(Product, on_delete=CASCADE, blank= False)
-    price= models.IntegerField()
-
-
 class Payment(models.Model):
-    User= models.ForeignKey(User, on_delete=CASCADE, blank= False)
+    user_id= models.ForeignKey(User, on_delete=CASCADE, blank= False)
     address = models.CharField(max_length=50, blank=False)
     card_number = models.IntegerField()
-    expiration_date = models.IntegerField()
+    expiration_date = models.CharField(max_length=5, help_text='00/00', blank= False)
+    
+class Order(models.Model):
+    user_id= models.ForeignKey(User, on_delete=CASCADE, blank= False)
+    product_id= models.ForeignKey(Product, on_delete=CASCADE, blank= False)
+    price= models.FloatField()
+
 
 class Cart(models.Model):
-    User= models.ForeignKey(User, on_delete=CASCADE, blank= False)
-    Product= models.ForeignKey(Product, on_delete=CASCADE, blank= False)
+    user_id= models.ForeignKey(User, on_delete=CASCADE, blank= False)
+    product_id= models.ForeignKey(Product, on_delete=CASCADE, blank= False)
 
 
 

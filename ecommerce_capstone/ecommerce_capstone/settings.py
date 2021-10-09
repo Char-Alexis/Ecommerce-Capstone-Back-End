@@ -135,3 +135,4 @@ try:
     from ecommerce_capstone.local_settings import *
 except:
     pass
+

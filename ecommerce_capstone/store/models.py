@@ -15,7 +15,7 @@ class User(models.Model):
     last_name = models.CharField(max_length=50, blank=False)
     username = models.CharField(max_length=50, blank=False)
     password = models.CharField(max_length=50, blank=False)
-    phonenumber= models.CharField(max_length=20, blank = True)
+    phone_number= models.CharField(max_length=20, blank = True)
     address= models.CharField(max_length=20, blank = True)
     zip_code= models.IntegerField()
     state = models.CharField(max_length=20, blank = True)
@@ -43,7 +43,7 @@ class Payment(models.Model):
     address = models.CharField(max_length=50, blank=False)
     card_number = models.IntegerField()
     expiration_date = models.CharField(max_length=5, help_text='00/00', blank= False)
-    
+
 class Order(models.Model):
     user_id= models.ForeignKey(User, on_delete=CASCADE, blank= False)
     product_id= models.ForeignKey(Product, on_delete=CASCADE, blank= False)
@@ -53,6 +53,7 @@ class Order(models.Model):
 class Cart(models.Model):
     user_id= models.ForeignKey(User, on_delete=CASCADE, blank= False)
     product_id= models.ForeignKey(Product, on_delete=CASCADE, blank= False)
+    price = models.FloatField()
 
 
 

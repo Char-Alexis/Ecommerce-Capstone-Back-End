@@ -4,7 +4,7 @@ from .models import *
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'password', 'phonenumber','address','zip_code', 'state', 'country' ]
+        fields = ['id', 'username', 'password', 'phone_number','address','zip_code', 'state', 'country' ]
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,17 +16,23 @@ class ReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = ['id', 'user', 'product', 'comment']
 
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = ['id', 'address', 'card_number', 'expiration_date', 'total']
+
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['id', 'user', 'product', 'price']
 
-class PaymentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Payment
-        fields = ['id', 'address', 'card_number', 'expiration_date']
 
 class CartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cart
+        fields = ['id', 'user', 'product', 'price', 'quantity']
+
+class DeliverySerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
         fields = ['id', 'user', 'product']

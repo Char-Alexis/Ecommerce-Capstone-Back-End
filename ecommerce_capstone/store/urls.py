@@ -7,21 +7,21 @@ urlpatterns = [
     path('all/', views.get_all_users),
     path('login/', views.get_all_users),
 
-    path('product/', views.ProductList),
-    path('product/<int:pk>/', views.ProductDetail),
+    path('product/', views.ProductList.as_view()),
+    path('product/<int:pk>/', views.ProductDetail.as_view()),
     
-    path('review/', views.Review),
-    path('review/<int:user_id>', views.Review),
+    path('review/', views.ReviewList.as_view()),
+    path('review/<int:review>', views.ReviewList.as_view()),
 
 
-    path('order/', views.Order),
+    # path('order/', views.Order.as_view()),
 
-    path('payment/', views.Payment),
-    path('payment/<int:user_id>/', views.Payment),
+    path('payment/', views.Payment.as_view()),
+    path('payment/<int:user_id>/', views.Payment.as_view()),
     
-    path('cart/', views.Cart),
-    path('cart/<int:user_id>', views.Cart),
-    path('cart/delete/<int:user_id>', views.Cart),
+    path('cart/', views.CartList.as_view()),
+    path('cart/<int:user_id>', views.CartDetail.as_view()),
+    path('cart/delete/<int:user_id>', views.CartDetail.as_view()),
 
 
 ]

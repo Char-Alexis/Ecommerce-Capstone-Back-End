@@ -14,7 +14,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = ['id', 'user', 'product', 'comment']
+        fields = ['id', 'product_id', 'comment']
 
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:

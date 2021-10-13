@@ -15,44 +15,64 @@ from django.http.response import Http404
 # Create your views here.
 
 
-# class UserList(APIView):
+class UserList(APIView):
 
-#     permission_classes = [AllowAny]
+    permission_classes = [AllowAny]
 
-#     def get(self, request):
-#         users = User.objects.all()
-#         serializer = UserSerializer(users, many=True)
-#         return Response(serializer.data)
+    def get(self, request):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
 
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def get_all_users(request):
-    users = User.objects.all()
-    serializer = UserSerializer(users, many=True)
-    return Response(serializer.data)
+    def post(self, request):
+            serializer = UserSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST', 'GET'])
-@permission_classes([AllowAny])
-def user(request):
+# @api_view(['GET'])
+# @permission_classes([AllowAny])
+# def get_all_users(request):
+#     users = User.objects.all()
+#     serializer = UserSerializer(users, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['POST', 'GET'])
+# @permission_classes([AllowAny])
+# def user(request):
    
-    print('User', f"{request.user.id} {request.user.email} {request.user.username} ")
+#     print('User', f"{request.user.id} {request.user.email} {request.user.username} ")
    
-    if request.method == 'POST':
-        request.user
+#     if request.method == 'POST':
+#         request.user
         
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=request.user)
-            return Response(serializer.data, status- status.HTTP_204_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         serializer = UserSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save(user=request.user)
+#             return Response(serializer.data, status- status.HTTP_204_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class Login(APIView):
-    # def get (self):
-    #     user = User.objects.all()
-    #     serializer = UserSerializer(user, many=True)
-    #     return Response(serializer.data)
+class UserDetail(APIView):
+    def get_object(self, user):
+        try:
+                return User.objects.get(id=user)
+        except User.DoesNotExist:
+            raise Http404
 
-        
+    def get(self, request, user):
+        user = self.get_object(id=user)
+        serializer = UserSerializer(user, many=True)
+        return Response(serializer.data)
+
+    def put(self, request, user):
+            user = self.get_object(user)
+            serializer = UserSerializer(user, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     # def post (self, request):
     #     users = UserSerializer(data=request.data)
     #     if serializer.is_valid():
@@ -60,7 +80,7 @@ class Login(APIView):
     #         return Response(serializer.data, status=status.HTTP_201_CREATED)
     #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    pass
+    # pass
       
 
 class ProductList(APIView):
@@ -119,7 +139,35 @@ class ReviewList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ReviewDetail(APIView):
+    def get_object(self, review):
+            try:
+                return Review.objects.get(id=review)
+            except Review.DoesNotExist:
+                raise Http404
 
+    def get(self, request, review):
+        try:
+            review = self.get_object(review)
+            serializer = ReviewSerializer(review)
+            return Response(serializer.data)
+        except Review.DoesNotExist:
+            raise Http404
+
+
+    def put(self, request, pk):
+        review = self.get_object(pk)
+        serializer = ReviewSerializer(review, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
+    def delete(self, request, pk):
+        review = self.get_object(pk)
+        review.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 # STRIPE
 class Payment(APIView):

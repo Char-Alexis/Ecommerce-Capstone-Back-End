@@ -4,15 +4,14 @@ from store import views
 
 
 urlpatterns = [
-    path('all/', views.get_all_users),
-    path('login/', views.get_all_users),
+    path('user/', views.UserList.as_view()),
+    path('user/<int:pk>', views.UserDetail.as_view()),
 
     path('product/', views.ProductList.as_view()),
     path('product/<int:pk>/', views.ProductDetail.as_view()),
     
     path('review/', views.ReviewList.as_view()),
-    path('review/<int:review>', views.ReviewList.as_view()),
-
+    path('review/<int:review>', views.ReviewDetail.as_view()),
 
     # path('order/', views.Order.as_view()),
 

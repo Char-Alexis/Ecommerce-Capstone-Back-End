@@ -1,4 +1,5 @@
 from django.urls import path, include
+# from ecommerce_capstone.store.views import ReviewDetail
 # from .views import *
 from store import views
 
@@ -11,7 +12,8 @@ urlpatterns = [
     path('product/<int:pk>/', views.ProductDetail.as_view()),
     
     path('review/', views.ReviewList.as_view()),
-    path('review/<int:review>', views.ReviewDetail.as_view()),
+    path('review/get/<int:review>', views.ReviewDetail.as_view()),
+    path('review/post/<int:review>', views.ReviewDetail.as_view()),
 
     # path('order/', views.Order.as_view()),
 

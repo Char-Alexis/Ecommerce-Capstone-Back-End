@@ -4,12 +4,12 @@ from .models import *
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'password', 'phone_number','address','zip_code', 'state', 'country' ]
+        fields = ['id', 'first_name', 'last_name','username', 'password']
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['product_name', 'price', 'description', 'category']
+        fields = ['id', 'product_name', 'price', 'description', 'category']
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:

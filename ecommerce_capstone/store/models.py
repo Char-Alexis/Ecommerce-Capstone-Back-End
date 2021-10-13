@@ -17,12 +17,10 @@ class User(models.Model):
     last_name = models.CharField(max_length=50, blank=False)
     username = models.CharField(max_length=50, blank=False)
     password = models.CharField(max_length=50, blank=False)
-    phone_number= models.CharField(max_length=20, default=0, blank = True)
-    address= models.CharField(max_length=20, blank = True)
-    zip_code= models.IntegerField()
-    state = models.CharField(max_length=20, blank = True)
-    country = models.CharField(max_length=20, blank = True)
-
+    
+    def __init__(self):
+        return self.username
+        
 class Product(models.Model):
     product_name = models.CharField(max_length=50)
     price = models.FloatField()

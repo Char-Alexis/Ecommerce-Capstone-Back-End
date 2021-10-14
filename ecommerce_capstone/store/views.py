@@ -14,10 +14,12 @@ from django.http.response import Http404
 
 # Create your views here.
 
+# @api_view(['GET'])
+# @permission_classes([AllowAny])
 
 class UserList(APIView):
 
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         users = User.objects.all()
@@ -31,8 +33,6 @@ class UserList(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# @api_view(['GET'])
-# @permission_classes([AllowAny])
 # def get_all_users(request):
 #     users = User.objects.all()
 #     serializer = UserSerializer(users, many=True)

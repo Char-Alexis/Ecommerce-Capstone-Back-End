@@ -18,8 +18,8 @@ class User(models.Model):
     username = models.CharField(max_length=50, blank=False)
     password = models.CharField(max_length=50, blank=False)
     
-    def __init__(self):
-        return self.username
+    def __str__(self):
+        return str(self.username)
         
 class Product(models.Model):
     product_name = models.CharField(max_length=50)

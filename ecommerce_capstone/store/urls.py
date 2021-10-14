@@ -15,7 +15,7 @@ urlpatterns = [
     path('review/get/<int:review>', views.ReviewDetail.as_view()),
     path('review/post/<int:review>', views.ReviewDetail.as_view()),
 
-    # path('order/', views.Order.as_view()),
+    path('order/', views.OrderList.as_view()),
 
     path('payment/', views.Payment.as_view()),
     path('payment/<int:user_id>/', views.Payment.as_view()),

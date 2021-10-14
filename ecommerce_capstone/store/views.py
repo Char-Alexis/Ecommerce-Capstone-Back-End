@@ -176,6 +176,20 @@ class ReviewDetail(APIView):
         review.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+class OrderList(APIView):
+    def get(self, request):
+        order = Order.objects.all()
+        serializer = OrderSerializer(order, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = OrderSerializer(data= request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status= status.HTTP_400_BAD_REQUEST)
+
 # STRIPE
 class Payment(APIView):
     def get(self, request):
@@ -198,7 +212,7 @@ class CartList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = OrderSerializer(data= request.data)
+        serializer = CartSerializer(data= request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

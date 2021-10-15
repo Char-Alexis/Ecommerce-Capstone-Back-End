@@ -20,15 +20,15 @@ class ReviewSerializer(serializers.ModelSerializer):
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
-        fields = ['id', 'address', 'card_number', 'expiration_date', 'total']
+        fields = ['id', 'user', 'card_number', 'expiration_date', 'total']
 
-class OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Order
-        fields = ['id', 'price']
+# class OrderSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Order
+#         fields = ['id', 'price']
 
 
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
-        fields = ['id', 'price', 'quantity']
+        fields = ['user_id', 'product_id', 'quantity']

@@ -49,12 +49,12 @@ class Order(models.Model):
 class Cart(models.Model):
     user_id= models.ForeignKey(User, on_delete=CASCADE, blank= False)
     product_id= models.ForeignKey(Product, on_delete=CASCADE, null= True)
-    price = models.FloatField(default=0)
     quantity = models.IntegerField(default=0)
 
 class Delivery(models.Model):
     user_id= models.ForeignKey(User, on_delete=CASCADE, blank= False)
     product_id= models.ForeignKey(Product, on_delete=CASCADE, blank= False)
+    
     # address=
     # state=
     # zip_code=

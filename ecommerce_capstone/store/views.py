@@ -10,10 +10,13 @@ from .serializers import *
 from .models import *
 # from .serializer import UserSerializer
 from django.contrib.auth.models import User
+from store import models
 from django.http.response import Http404
+import json
+from django.http import JsonResponse
 
 # import stripe
-# stripe.api_key = "sk_test_51JiRtyCwgXG48Eq1Su24DN4inPyT8E6jOfLdsHTfkU3gKLyU9g7sg3r0npAzSxPXSwjdb893TVvT3BhCkO1lAc0800YZxMSY2F"
+# stripe.api_key = 'sk_test_51JiRtyCwgXG48Eq1Su24DN4inPyT8E6jOfLdsHTfkU3gKLyU9g7sg3r0npAzSxPXSwjdb893TVvT3BhCkO1lAc0800YZxMSY2F'
 # Create your views here.
 
 # @api_view(['GET'])
@@ -200,18 +203,18 @@ class ReviewUser(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class OrderList(APIView):
-    def get(self, request):
-        order = Order.objects.all()
-        serializer = OrderSerializer(order, many=True)
-        return Response(serializer.data)
+# class OrderList(APIView):
+#     def get(self, request):
+#         order = Order.objects.all()
+#         serializer = OrderSerializer(order, many=True)
+#         return Response(serializer.data)
 
-    def post(self, request):
-        serializer = OrderSerializer(data= request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.data, status= status.HTTP_400_BAD_REQUEST)
+#     def post(self, request):
+#         serializer = OrderSerializer(data= request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.data, status= status.HTTP_400_BAD_REQUEST)
 
 # STRIPE
 class Payment(APIView):
@@ -240,11 +243,23 @@ class CartList(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = CartSerializer(data= request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.data, status= status.HTTP_400_BAD_REQUEST)
+        body=json.loads(request.body)
+        product_id, quantity = body["product_id"], body["quantity"]
+        user = models.User.objects.get(username = body["username"])
+        data=dict(
+            product_id = Product.objects.get(id = product_id),
+            quantity=quantity,
+            user_id = user
+        )
+        print("*****")
+        print(user)
+        instance = Cart.objects.create(**data)
+        # serializer = CartSerializer(data=instance)
+        # if serializer.is_valid():
+        #     serializer.save()
+
+        return JsonResponse(dict(product_id=instance.product_id.id, user_id=instance.user_id.id),status=status.HTTP_201_CREATED, safe=False)
+        # return Response(serializer.data, status= status.HTTP_400_BAD_REQUEST)
     
 class CartDetail(APIView):
 

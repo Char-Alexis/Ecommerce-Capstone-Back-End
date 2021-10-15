@@ -20,8 +20,8 @@ urlpatterns = [
     path('review/', views.ReviewUser.as_view()),
 
 
-    path('order/', views.OrderList.as_view()),
-    path('order/<int:user_id>', views.OrderList.as_view()),
+    # path('order/', views.OrderList.as_view()),
+    # path('order/<int:user_id>', views.OrderList.as_view()),
 
 
     path('payment/', views.Payment.as_view()),
@@ -29,7 +29,6 @@ urlpatterns = [
     
     path('cart/', views.CartList.as_view()),
     path('cart/<int:user_id>', views.CartDetail.as_view()),
-    path('cart/delete/<int:user_id>', views.CartDetail.as_view()),
 
     path('stripe/', views.Stripe.as_view())
 

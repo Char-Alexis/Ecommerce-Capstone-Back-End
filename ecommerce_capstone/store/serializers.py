@@ -12,9 +12,10 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ['id', 'product_name', 'price', 'description', 'category']
 
 class ReviewSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Review
-        fields = ['id', 'product_id', 'comment']
+        fields = ['id', 'user_id', 'product_id', 'comment']
 
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,9 +31,4 @@ class OrderSerializer(serializers.ModelSerializer):
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
-        fields = ['id', 'user', 'product', 'price', 'quantity']
-
-class DeliverySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Cart
-        fields = ['id', 'user', 'product']
+        fields = ['id', 'price', 'quantity']

@@ -12,6 +12,8 @@ from .models import *
 from django.contrib.auth.models import User
 from django.http.response import Http404
 
+# import stripe
+# stripe.api_key = "sk_test_51JiRtyCwgXG48Eq1Su24DN4inPyT8E6jOfLdsHTfkU3gKLyU9g7sg3r0npAzSxPXSwjdb893TVvT3BhCkO1lAc0800YZxMSY2F"
 # Create your views here.
 
 # @api_view(['GET'])
@@ -142,14 +144,14 @@ class ReviewList(APIView):
 class ReviewDetail(APIView):
     def get_object(self, review):
             try:
-                return Review.objects.get(id=review)
+                return Review.objects.filter(id=review)
             except Review.DoesNotExist:
                 raise Http404
 
     def get(self, request, review):
         try:
             review = self.get_object(review)
-            serializer = ReviewSerializer(review)
+            serializer = ReviewSerializer(review, many=True)
             return Response(serializer.data)
         except Review.DoesNotExist:
             raise Http404
@@ -176,6 +178,27 @@ class ReviewDetail(APIView):
         review.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class ReviewUser(APIView):
+    def get_object(self, user):
+                try:
+                    return Review.objects.filter(user=user)
+                except Review.DoesNotExist:
+                    raise Http404
+    def get(self, request, user):
+            try:
+                review = self.get_object(user)
+                serializer = ReviewSerializer(review)
+                return Response(serializer.data)
+            except Review.DoesNotExist:
+                raise Http404
+    def post(self, request):
+            print(request.data)
+
+            serializer = ReviewSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class OrderList(APIView):
     def get(self, request):
@@ -204,6 +227,11 @@ class Payment(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.data, status= status.HTTP_400_BAD_REQUEST)
 
+
+class Stripe(APIView):
+    def get(self, request):
+        pass
+    
 
 class CartList(APIView):
     def get(self, request):

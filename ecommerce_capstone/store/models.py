@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+
 # from django.contrib.auth.models import Product
 # from django.contrib.auth.models import Review
 # from django.contrib.auth.models import Order
@@ -32,10 +33,9 @@ class Review(models.Model):
     user_id= models.ForeignKey(User, on_delete=CASCADE, blank= False)
     product_id= models.ForeignKey(Product, on_delete=CASCADE, blank= False)
     comment= models.CharField(max_length=200)
+    
 
 class Payment(models.Model):
-    user_id= models.ForeignKey(User, on_delete=CASCADE, blank= False)
-    # cart_id = models.ForeignKey(Cart, null=True, on_delete=CASCADE)
     card_number = models.IntegerField()
     expiration_date = models.CharField(max_length=5, help_text='00/00', blank= False)
     total = models.DecimalField(default=0, max_digits=6, decimal_places=2)
@@ -48,7 +48,7 @@ class Order(models.Model):
 
 class Cart(models.Model):
     user_id= models.ForeignKey(User, on_delete=CASCADE, blank= False)
-    product_id= models.ForeignKey(Product, on_delete=CASCADE, blank= False)
+    product_id= models.ForeignKey(Product, on_delete=CASCADE, null= True)
     price = models.FloatField(default=0)
     quantity = models.IntegerField(default=0)
 

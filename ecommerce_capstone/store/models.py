@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 # from django.contrib.auth.models import Payment
 from django.db.models.deletion import CASCADE
 from django.contrib.auth.models import *
+from django.db.models.expressions import Case
 
 
 
@@ -33,7 +34,11 @@ class Review(models.Model):
     user_id= models.ForeignKey(User, on_delete=CASCADE, blank= False)
     product_id= models.ForeignKey(Product, on_delete=CASCADE, blank= False)
     comment= models.CharField(max_length=200)
-    
+
+# class Comment(models.Model):
+#     username= models.ForeignKey(User, on_delete=CASCADE, blank=False)
+#     product_id= models.ForeignKey(Product, on_delete=CASCADE, blank=False )
+#     comment= models.CharField(max_length=500)
 
 class Payment(models.Model):
     card_number = models.IntegerField()
@@ -52,8 +57,8 @@ class Cart(models.Model):
     quantity = models.IntegerField(default=0)
 
 class Delivery(models.Model):
-    user_id= models.ForeignKey(User, on_delete=CASCADE, blank= False)
-    product_id= models.ForeignKey(Product, on_delete=CASCADE, blank= False)
+    product_id= models.ForeignKey(Product, on_delete=CASCADE, null= True)
+    notes= models.CharField(max_length=200, default=None)
     
     # address=
     # state=
